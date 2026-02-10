@@ -1,2 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿namespace JTC
+{
+    class Program
+    {
+        static async Task Main()
+        {
+            IServiceProvider serviceProvider = DependencyInjection.BuildServiceProvider();
+            await serviceProvider.GetRequiredService<Bot>().RunAsync();
+        }
+    }
+}
