@@ -1,7 +1,17 @@
 ﻿namespace JTC.Events
 {
+    /// <summary>
+    /// Handles events related to Discord modals.
+    /// </summary>
+    /// <param name="discordSocketClient">The Discord client used to access voice channels.</param>
     public class ModalEvent(DiscordSocketClient discordSocketClient)
     {
+        /// <summary>
+        /// Called when a Discord modal is submitted.
+        /// Routes to the appropriate handler based on the modal type.
+        /// </summary>
+        /// <param name="socketModal">The submitted modal.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task OnModalSubmitted(SocketModal socketModal)
         {
             string[] parts = socketModal.Data.CustomId.Split(':');
@@ -24,6 +34,13 @@
             }
         }
 
+        /// <summary>
+        /// Renames a temporary voice channel based on modal input.
+        /// </summary>
+        /// <param name="socketModal">The modal submitted.</param>
+        /// <param name="voiceChannelId">The ID of the temporary voice channel.</param>
+        /// <param name="data">Dictionary of input values from the modal.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task RenameTemporaryVoiceChannelAsync(SocketModal socketModal, ulong voiceChannelId, Dictionary<string, string> data)
         {
             if (data.TryGetValue("name", out var name) && !string.IsNullOrWhiteSpace(name) && GetVoiceChannel(voiceChannelId) is { } voiceChannel)
@@ -36,6 +53,13 @@
             }
         }
 
+        /// <summary>
+        /// Kicks a user from a temporary voice channel based on modal input.
+        /// </summary>
+        /// <param name="socketModal">The modal submitted.</param>
+        /// <param name="voiceChannelId">The ID of the temporary voice channel.</param>
+        /// <param name="data">Dictionary of input values from the modal.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task KickTemporaryVoiceChannelAsync(SocketModal socketModal, ulong voiceChannelId, Dictionary<string, string> data)
         {
             if (data.TryGetValue("user", out var userIdString) && ulong.TryParse(userIdString, out var userId) && GetVoiceChannel(voiceChannelId) is { } voiceChannel && voiceChannel.ConnectedUsers.FirstOrDefault(user => user.Id == userId) is { } kicked)
@@ -45,6 +69,13 @@
             }
         }
 
+        /// <summary>
+        /// Sets the user limit for a temporary voice channel based on modal input.
+        /// </summary>
+        /// <param name="socketModal">The modal submitted.</param>
+        /// <param name="voiceChannelId">The ID of the temporary voice channel.</param>
+        /// <param name="data">Dictionary of input values from the modal.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task UserLimitTemporaryVoiceChannelAsync(SocketModal socketModal, ulong voiceChannelId, Dictionary<string, string> data)
         {
             if (!data.TryGetValue("user-limit", out var userLimitString) || !int.TryParse(userLimitString, out var userLimit) || userLimit < 0 || userLimit > 99)
@@ -59,6 +90,11 @@
             await socketModal.RespondAsync($"The user limit has been set to {userLimit}.", ephemeral: true);
         }
 
+        /// <summary>
+        /// Retrieves a voice channel by its ID.
+        /// </summary>
+        /// <param name="channelId">The ID of the voice channel.</param>
+        /// <returns>The voice channel if found; otherwise, null.</returns>
         private SocketVoiceChannel? GetVoiceChannel(ulong channelId) =>
             discordSocketClient.GetChannel(channelId) as SocketVoiceChannel;
     }

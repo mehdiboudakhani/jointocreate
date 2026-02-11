@@ -1,7 +1,17 @@
 ﻿namespace JTC.Core
 {
+    /// <summary>
+    /// Represents the Discord bot.
+    /// </summary>
+    /// <param name="discordSocketClient">The Discord client used to connect and handle events.</param>
+    /// <param name="logger">Logger instance for logging bot activity and errors.</param>
+    /// <param name="serviceProvider">Service provider for dependency injection.</param>
     class Bot(DiscordSocketClient discordSocketClient, ILogger<Bot> logger, IServiceProvider serviceProvider)
     {
+        /// <summary>
+        /// Starts the bot and its services.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task RunAsync()
         {
             try
@@ -21,6 +31,9 @@
             }
         }
 
+        /// <summary>
+        /// Registers Discord client events with their handlers.
+        /// </summary>
         private void RegisterEvents()
         {
             discordSocketClient.Ready += () => 
@@ -39,6 +52,12 @@
                 EventWrapper(() => serviceProvider.GetRequiredService<ModalEvent>().OnModalSubmitted(modal), "modalSubmitted");
         }
 
+        /// <summary>
+        /// Executes an event handler safely and logs errors.
+        /// </summary>
+        /// <param name="handler">The asynchronous event handler to execute.</param>
+        /// <param name="eventName">The name of the event.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task EventWrapper(Func<Task> handler, string eventName)
         {
             try

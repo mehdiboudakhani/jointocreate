@@ -1,7 +1,19 @@
 ﻿namespace JTC.Interactions
 {
+    /// <summary>
+    /// Handles slash commands related to hubs.
+    /// </summary>
+    /// <param name="hubService">Service for managing hubs.</param>
+    /// <param name="logger">Logger for recording hub interaction messages.</param>
     public class HubInteraction(HubService hubService, ILogger<HubInteraction> logger) : InteractionModuleBase<SocketInteractionContext>
     {
+        /// <summary>
+        /// Creates a new hub voice channel.
+        /// </summary>
+        /// <param name="childName">Name template for temporary voice channels.</param>
+        /// <param name="userLimit">Maximum number of users allowed in temporary voice channels.</param>
+        /// <param name="interface">Enable or disable the temporary voice channel management interface for the owner.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [SlashCommand("new-hub", "Create a hub.")]
         public async Task AddHubAsync(
             [Summary("child-name", "Name given to temporary voice channels. Available variable: {user}.")]

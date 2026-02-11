@@ -1,10 +1,23 @@
 ﻿namespace JTC.Interactions
 {
+    /// <summary>
+    /// Handles interactions related to temporary voice channels.
+    /// </summary>
+    /// <param name="discordSocketClient">The Discord client used to access voice channels.</param>
+    /// <param name="modalFactory">Factory for creating modals.</param>
+    /// <param name="temporaryVoiceChannelService">Service for managing temporary voice channels.</param>
     public class TemporaryVoiceChannelInteraction(
         DiscordSocketClient discordSocketClient, 
         ModalFactory modalFactory, 
         TemporaryVoiceChannelService temporaryVoiceChannelService) : InteractionModuleBase<SocketInteractionContext>
     {
+        /// <summary>
+        /// Handles settings interactions for a temporary voice channel.
+        /// Routes the interaction to the appropriate handler based on the selected value.
+        /// </summary>
+        /// <param name="rawData">The raw custom ID of the interaction.</param>
+        /// <param name="values">The selected values from the interaction menu.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [ComponentInteraction("settings:*")]
         public async Task SettingsAsync(string rawData, string[] values)
         {
@@ -46,6 +59,12 @@
             }
         }
 
+        /// <summary>
+        /// Locks or unlocks a temporary voice channel by modifying permissions for the @everyone role.
+        /// </summary>
+        /// <param name="voiceChannelId">The ID of the temporary voice channel.</param>
+        /// <param name="lock">True to lock, false to unlock.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task SetVoiceChannelAccessibility(ulong voiceChannelId, bool @lock)
         {
             var channel = discordSocketClient.GetChannel(voiceChannelId) as SocketVoiceChannel;
@@ -58,6 +77,11 @@
                 await channel.AddPermissionOverwriteAsync(everyoneRole, new OverwritePermissions(connect: PermValue.Allow));
         }
 
+        /// <summary>
+        /// Retrieves the list of users that can be kicked from a temporary voice channel, excluding the channel owner.
+        /// </summary>
+        /// <param name="voiceChannelId">The ID of the temporary voice channel.</param>
+        /// <returns>A list of <see cref="SelectMenuOptionBuilder"/> representing kickable users.</returns>
         public async Task<List<SelectMenuOptionBuilder>> GetKickableUsersAsync(ulong voiceChannelId)
         {
             if (discordSocketClient.GetChannel(voiceChannelId) is not SocketVoiceChannel socketVoiceChannel)

@@ -1,7 +1,15 @@
 ﻿namespace JTC.Factories
 {
+    /// <summary>
+    /// Factory for creating modals.
+    /// </summary>
     public class ModalFactory
     {
+        /// <summary>
+        /// Creates a modal for renaming a voice channel.
+        /// </summary>
+        /// <param name="voiceChannelId">The ID of the voice channel.</param>
+        /// <returns>A <see cref="ModalBuilder"/> representing the rename modal.</returns>
         public ModalBuilder RenameModal(ulong voiceChannelId)
         {
             TextInputBuilder textInput = new TextInputBuilder()
@@ -19,6 +27,11 @@
             return modal;
         }
 
+        /// <summary>
+        /// Creates a modal for setting the user limit of a voice channel.
+        /// </summary>
+        /// <param name="voiceChannelId">The ID of the voice channel.</param>
+        /// <returns>A <see cref="ModalBuilder"/> representing the user limit modal.</returns>
         public ModalBuilder UserLimitModal(ulong voiceChannelId)
         {
             TextInputBuilder textInput = new TextInputBuilder()
@@ -37,6 +50,12 @@
             return modal;
         }
 
+        /// <summary>
+        /// Creates a modal for kicking a user from a voice channel.
+        /// </summary>
+        /// <param name="voiceChannelId">The ID of the voice channel.</param>
+        /// <param name="options">The list of selectable users to kick.</param>
+        /// <returns>A <see cref="ModalBuilder"/> representing the kick modal.</returns>
         public ModalBuilder KickModal(ulong voiceChannelId, List<SelectMenuOptionBuilder> options)
         {
             ModalBuilder modal = new ModalBuilder()
