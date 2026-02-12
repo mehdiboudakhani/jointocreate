@@ -5,6 +5,7 @@
     /// </summary>
     /// <param name="hubService">Service for managing hubs.</param>
     /// <param name="logger">Logger for recording hub interaction messages.</param>
+    [RequireUserPermission(GuildPermission.Administrator)]
     public class HubInteraction(HubService hubService, ILogger<HubInteraction> logger) : InteractionModuleBase<SocketInteractionContext>
     {
         /// <summary>
