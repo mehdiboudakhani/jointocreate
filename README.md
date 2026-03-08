@@ -14,3 +14,25 @@ The `/new-hub` command offers three options:
 
 ## 🔗 Invitation link
 Invite JoinToCreate to your server by clicking [here](https://discord.com/oauth2/authorize?client_id=1470776237596348572)!
+
+## 🐳 Self-hosting with Docker
+Use Docker to easily host JoinToCreate on your machine.
+
+### ⚙️ Prerequisites
+- Git
+- Docker
+- Discord bot token
+
+### 🚀 Deployment
+Clone the repository.
+```bash
+git clone https://github.com/mehdiboudakhani/jointocreate.git
+```
+Configure the environment variable (adapt the example below if you are not on Windows).
+```bash
+setx JTC_DISCORD_BOT_TOKEN "YOUR_DISCORD_BOT_TOKEN"
+```
+Make sure you are in the project folder and run the bot with Docker.
+```bash
+docker compose up -d --build
+```
