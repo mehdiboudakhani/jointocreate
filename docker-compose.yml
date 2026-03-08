@@ -1,0 +1,14 @@
+services:
+  bot:
+    container_name: bot
+    build: .
+    environment:
+      - JTC_DISCORD_BOT_TOKEN=${JTC_DISCORD_BOT_TOKEN}
+    volumes:
+      - data:/jtc/data
+      - logs:/jtc/logs
+    restart: unless-stopped
+
+volumes:
+  data:
+  logs:
